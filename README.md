@@ -1,7 +1,7 @@
 # Python Script Documentation: parse.py
 
 ## Introduction
-`parse.py` is a Python script designed to parse input in the IPPCode24 format and create 
+`parse.py` is a Python script designed to parse input in the IPPcode24 format and create 
 an XML representation of it. 
 
 ## Input Format
