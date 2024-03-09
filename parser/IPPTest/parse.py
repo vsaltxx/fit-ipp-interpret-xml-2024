@@ -220,23 +220,20 @@ def validate_instruction(operator, operand, arg_number, type_, help_type):
             operator == 'JUMPIFEQ' or
             operator == 'JUMPIFNEQ'):
 
-            # print('all good')
             operands_num = 3
-    
-        
 
-        if (operator == 'NOT' or 
+    
+        elif (operator == 'NOT' or 
             operator == 'MOVE' or
             operator == 'INT2CHAR' or 
             operator == 'READ' or
             operator == 'STRLEN' or
             operator == 'TYPE'):
 
-            # print('that shouldnt be 2')
             operands_num = 2
         
 
-        if (operator == 'DEFVAR' or 
+        elif (operator == 'DEFVAR' or 
             operator == 'CALL' or
             operator == 'PUSHS' or
             operator == 'POPS' or
@@ -246,27 +243,24 @@ def validate_instruction(operator, operand, arg_number, type_, help_type):
             operator == 'EXIT' or
             operator == 'DPRINT'):
             
-            # print('that shouldnt be 1')
             operands_num = 1
-        
-        
 
-        if (operator == 'CREATEFRAME' or 
+        elif (operator == 'CREATEFRAME' or 
             operator == 'PUSHFRAME' or
             operator == 'POPFRAME' or
             operator == 'RETURN' or
             operator == 'BREAK'):
 
-            # print('that shouldnt be 0')
             operands_num = 0
 
+        
         if operands_num == 1:
 
             if (operator == 'DEFVAR' or operator == 'POPS') and (type_ != 'var'):
                 sys.exit(ERROR_LEXICAL_OR_SYNTAX)
             elif (operator == 'CALL' or operator == 'LABEL' or operator == 'JUMP') and (type_ != 'label'): 
                 sys.exit(ERROR_LEXICAL_OR_SYNTAX)
-            elif (operator == 'PUSHS' or operator == 'WRITE' or operator == 'EXIT') and (type_ != 'symb'):
+            elif (operator == 'PUSHS' or operator == 'WRITE' or operator == 'EXIT') and (help_type != 'symb'):
                 sys.exit(ERROR_LEXICAL_OR_SYNTAX)
 
         elif operands_num == 2:
@@ -286,6 +280,8 @@ def validate_instruction(operator, operand, arg_number, type_, help_type):
 
         elif operands_num == 3:
             
+            #print(operand, type_)
+
             if ((operator == 'ADD' or operator == 'SUB' or 
                  operator == 'MUL' or operator == 'IDIV' or 
                  operator == 'LT' or operator == 'GT' or operator == 'EQ' or 
@@ -295,7 +291,7 @@ def validate_instruction(operator, operand, arg_number, type_, help_type):
                 and 
                 ((arg_number == 0 and type_ != 'var') or 
                  (arg_number == 1 and help_type != 'symb') or 
-                 (arg_number == 1 and help_type != 'symb'))):
+                 (arg_number == 2 and help_type != 'symb'))):
                 
                 #print('dead in validation')
                 sys.exit(ERROR_LEXICAL_OR_SYNTAX)
@@ -303,7 +299,7 @@ def validate_instruction(operator, operand, arg_number, type_, help_type):
                   and
                   (arg_number == 0 and type_ != 'label') or 
                   (arg_number == 1 and help_type != 'symb') or 
-                  (arg_number == 1 and help_type != 'symb')):
+                  (arg_number == 2 and help_type != 'symb')):
 
                 sys.exit(ERROR_LEXICAL_OR_SYNTAX)
 
@@ -384,7 +380,7 @@ def generate_xml(operators, operands):
             validate_instruction(operator, operand, arg_number, type_, help_type)
 
 
-            #print(operands_num, arg_number, operand, help_type, type_)
+            # print(operands_num, arg_number, operand, help_type, type_)
 
             #print('dead after validation')
 
