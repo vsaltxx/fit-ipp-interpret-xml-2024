@@ -116,8 +116,8 @@ def check_allowed_number_of_operator_operands(operators, operands):
 
         if (operator == 'DEFVAR' or 
             operator == 'CALL' or
-            operator == 'PUSH' or
-            operator == 'POP' or
+            operator == 'PUSHS' or
+            operator == 'POPS' or
             operator == 'WRITE' or
             operator == 'LABEL' or
             operator == 'JUMP' or
@@ -238,8 +238,8 @@ def validate_instruction(operator, operand, arg_number, type_, help_type):
 
         if (operator == 'DEFVAR' or 
             operator == 'CALL' or
-            operator == 'PUSH' or
-            operator == 'POP' or
+            operator == 'PUSHS' or
+            operator == 'POPS' or
             operator == 'WRITE' or
             operator == 'LABEL' or
             operator == 'JUMP' or
@@ -320,6 +320,7 @@ def generate_xml(operators, operands):
                 type_ = 'var'
                 value = operand 
 
+                help_type = 'symb' # symb = var or const
 
             elif operand.startswith("int@") or operand.startswith("bool@") or operand.startswith("string@") or operand.startswith("nil@"):
 
