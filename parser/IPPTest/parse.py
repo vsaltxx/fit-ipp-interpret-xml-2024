@@ -261,16 +261,37 @@ def validate_instruction(operator, operand, arg_number, type_, help_type):
             operands_num = 0
 
         if operands_num == 1:
-            if (operator == 'READ' and arg_number == 0 and type_ != 'var') or (operator == 'READ' and arg_number == 1 and type_ != 'type'):
+
+            if (operator == 'DEFVAR' or operator == 'POPS') and (type_ != 'var'):
+                sys.exit(ERROR_LEXICAL_OR_SYNTAX)
+            elif (operator == 'CALL' or operator == 'LABEL' or operator == 'JUMP') and (type_ != 'label'): 
+                sys.exit(ERROR_LEXICAL_OR_SYNTAX)
+            elif (operator == 'PUSHS' or operator == 'WRITE' or operator == 'EXIT') and (type_ != 'symb'):
+                sys.exit(ERROR_LEXICAL_OR_SYNTAX)
+
+        elif operands_num == 2:
+            
+            if ((operator =='NOT' or operator == 'MOVE' or 
+                 operator == 'INT2CHAR' or operator == 'STRLEN' or 
+                 operator == 'TYPE')
+                 and 
+                 ((arg_number == 0 and type_ != 'var') or 
+                 (arg_number == 1 and help_type != 'symb'))):
+                
                 sys.exit(ERROR_LEXICAL_OR_SYNTAX)  
-        # elif operands_num == 2:
+
+            elif operator == 'READ' and ((arg_number == 0 and type_ != 'var') 
+                                         or (arg_number == 1 and type_ != 'type')):
+                sys.exit(ERROR_LEXICAL_OR_SYNTAX)
+
         elif operands_num == 3:
             
             if ((operator == 'ADD' or operator == 'SUB' or 
                  operator == 'MUL' or operator == 'IDIV' or 
                  operator == 'LT' or operator == 'GT' or operator == 'EQ' or 
                  operator == 'AND' or operator == 'OR' or
-                 operator == 'STRING2INT' or operator == 'CONCAT' or operator == 'SETCHAR') 
+                 operator == 'STRING2INT' or operator == 'CONCAT' or
+                 operator == 'SETCHAR' or operator == 'GETCHAR') 
                 and 
                 ((arg_number == 0 and type_ != 'var') or 
                  (arg_number == 1 and help_type != 'symb') or 
