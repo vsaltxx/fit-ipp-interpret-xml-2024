@@ -8,6 +8,9 @@ ERROR_LEXICAL_OR_SYNTAX = 23
 
 type_ = ""
 value = ""
+help_type = "" # use this flag in instruction validation
+
+operands_num = 0;
 
 # TODO add description
 def help():
@@ -99,6 +102,8 @@ def check_allowed_number_of_operator_operands(operators, operands):
             operator == 'JUMPIFEQ' or
             operator == 'JUMPIFNEQ') and (len(operand_list) != 3):
             sys.exit(ERROR_LEXICAL_OR_SYNTAX)
+        else:
+            operands_num = 3
         
 
         if (operator == 'NOT' or 
@@ -108,7 +113,8 @@ def check_allowed_number_of_operator_operands(operators, operands):
             operator == 'STRLEN' or
             operator == 'TYPE') and (len(operand_list) != 2):
             sys.exit(ERROR_LEXICAL_OR_SYNTAX)
-        
+        else:
+            operands_num = 2
 
         if (operator == 'DEFVAR' or 
             operator == 'CALL' or
@@ -120,6 +126,8 @@ def check_allowed_number_of_operator_operands(operators, operands):
             operator == 'EXIT' or
             operator == 'DPRINT') and (len(operand_list) != 1):
             sys.exit(ERROR_LEXICAL_OR_SYNTAX)
+        else:
+            operands_num = 1
         
 
         if (operator == 'CREATEFRAME' or 
@@ -128,6 +136,8 @@ def check_allowed_number_of_operator_operands(operators, operands):
             operator == 'RETURN' or
             operator == 'BREAK') and (len(operand_list) != 0):
             sys.exit(ERROR_LEXICAL_OR_SYNTAX)
+        else:
+            operands_num = 0
         
 
 def validate_string(string):
@@ -207,6 +217,10 @@ def generate_xml(operators, operands):
         arg_number = 0
         for operand in operands[i]:
             
+
+            # for each operand interation redefine help_type flag to "" (clear the value)
+            help_type = ""
+
             #print(operator)
             #print(operand)
 #############################################################################################
@@ -240,10 +254,10 @@ def generate_xml(operators, operands):
 
                 if type_ == 'nil' and value != 'nil':
                     sys.exit(ERROR_LEXICAL_OR_SYNTAX) 
+                
+                help_type = 'symb'
 
-################################################################################################
 
-            
             elif operator == 'LABEL' or operator == 'CALL' or operator == 'JUMP' or  operator == 'JUMPIFEQ' or operator == 'JUMPIFNEQ':
                 type_ = 'label'
                 value = operand
@@ -256,12 +270,42 @@ def generate_xml(operators, operands):
             else:
                 sys.exit(ERROR_LEXICAL_OR_SYNTAX)  
 
+
+
+            if operands_num == 1:
+                if (operator == 'READ' and arg_number == 0 and type_ != 'var') or (operator == 'READ' and arg_number == 1 and type_ != 'type'):
+                    sys.exit(ERROR_LEXICAL_OR_SYNTAX)  
+            elif operands_num == 2:
+                continue
+            elif operands_num == 3:
+                if ((operator == 'ADD' or operator == 'SUB' or operator == 'MUL' or operator == 'IDIV' or 
+                     operator == 'LT' or operator == 'GT' or operator == 'EQ' or operator == 'AND' or operator == 'OR' or
+                     operator == 'STRING2INT' or operator == 'CONCAT' or operator == 'SETCHAR') 
+                    and 
+                     ((arg_number == 0 and type_ != 'var') or (arg_number == 1 and help_type != 'symb') or (arg_number == 1 and help_type != 'symb'))):
+                    sys.exit(ERROR_LEXICAL_OR_SYNTAX)
+
+        #     operator == 'SUB' or
+        #     operator == 'MUL' or
+        #     operator == 'IDIV' or  
+        #     operator == 'LT' or 
+        #     operator == 'GT' or 
+        #     operator == 'EQ' or 
+        #     operator == 'AND' or 
+        #     operator == 'OR' or
+        #     operator == 'STRING2INT' or
+        #     operator == 'CONCAT' or
+        #     operator == 'GETCHAR' or
+        #     operator == 'SETCHAR' or
+        #     operator == 'JUMPIFEQ' or
+        #     operator == 'JUMPIFNEQ') and (len(operand_list) != 3):
+        #     sys.exit(ERROR_LEXICAL_OR_SYNTAX)
+        # else:
              
             if (operator == 'POPS' and type_ != 'var'):
                 sys.exit(ERROR_LEXICAL_OR_SYNTAX)  
 
-            if (operator == 'READ' and arg_number == 0 and type_ != 'var') or (operator == 'READ' and arg_number == 1 and type_ != 'type'):
-                sys.exit(ERROR_LEXICAL_OR_SYNTAX)  
+            
 
 
             if ((operator == 'PUSHS') and (type_ == 'type')):
@@ -292,7 +336,7 @@ def main():
     operators, operands = parse_instruction(code_lines)
     check_operators(operators)
 
-    check_allowed_number_of_operator_operands(operators, operands)
+    # check_allowed_number_of_operator_operands(operators, operands)
     xml_output = generate_xml(operators, operands)
     print(xml_output)
 
