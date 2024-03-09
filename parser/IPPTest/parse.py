@@ -276,8 +276,15 @@ def validate_instruction(operator, operand, arg_number, type_, help_type):
                  (arg_number == 1 and help_type != 'symb') or 
                  (arg_number == 1 and help_type != 'symb'))):
                 
+                #print('dead in validation')
                 sys.exit(ERROR_LEXICAL_OR_SYNTAX)
+            elif ((operator == 'JUMPIFEQ' or operator == 'JUMPIFNEQ')
+                  and
+                  (arg_number == 0 and type_ != 'label') or 
+                  (arg_number == 1 and help_type != 'symb') or 
+                  (arg_number == 1 and help_type != 'symb')):
 
+                sys.exit(ERROR_LEXICAL_OR_SYNTAX)
 
 
 
@@ -299,7 +306,7 @@ def generate_xml(operators, operands):
             help_type = ""
 
             #print(operator)
-            #print(operand)
+            #print(operand, arg_number)
 #############################################################################################
 #################################### set type, set value ####################################
 #############################################################################################
@@ -318,19 +325,22 @@ def generate_xml(operators, operands):
 
                 type_, value = operand.split('@', 1)
 
+
+                #print(value)
                 if type_ == 'int':
                     if not validate_format(value):
                         sys.exit(ERROR_LEXICAL_OR_SYNTAX) 
-
-                if type_ == 'bool' and (value != 'true' or value != 'false'):
-                        sys.exit(ERROR_LEXICAL_OR_SYNTAX) 
-
+                
                 if type_ == 'string':
                     if not validate_string(value):
                         sys.exit(ERROR_LEXICAL_OR_SYNTAX)         
 
                 if type_ == 'nil' and value != 'nil':
                     sys.exit(ERROR_LEXICAL_OR_SYNTAX) 
+                
+                if type_ == 'bool' and value != 'true' and value != 'false':
+                    sys.exit(ERROR_LEXICAL_OR_SYNTAX)
+                
                 
                 help_type = 'symb'
 
@@ -352,8 +362,9 @@ def generate_xml(operators, operands):
             validate_instruction(operator, operand, arg_number, type_, help_type)
 
 
-            # print(operands_num, arg_number, operand, help_type, type_)
+            #print(operands_num, arg_number, operand, help_type, type_)
 
+            #print('dead after validation')
 
     
              
@@ -371,6 +382,7 @@ def generate_xml(operators, operands):
             xml_output += f'    <arg{arg_number} type="{type_}">{escape_xml(value)}</arg{arg_number}>\n'
         xml_output += '  </instruction>\n'
     
+
     xml_output += '</program>'
     return xml_output
 
