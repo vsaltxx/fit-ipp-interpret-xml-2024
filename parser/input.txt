@@ -1,0 +1,3 @@
+.IPPcode24
+ADD bool@true bool@true bool@true1
+ADD bool@5 bool@true bool@true
