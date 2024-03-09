@@ -336,7 +336,7 @@ def main():
     operators, operands = parse_instruction(code_lines)
     check_operators(operators)
 
-    # check_allowed_number_of_operator_operands(operators, operands)
+    check_allowed_number_of_operator_operands(operators, operands)
     xml_output = generate_xml(operators, operands)
     print(xml_output)
 
