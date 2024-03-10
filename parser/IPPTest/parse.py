@@ -324,10 +324,7 @@ def generate_xml(operators, operands):
 
             #print(operator)
             #print(operand, arg_number)
-#############################################################################################
-#################################### set type, set value ####################################
-#############################################################################################
-            
+
             if operand.startswith("GF@") or operand.startswith("LF@") or operand.startswith("TF@"):
 
                 if not re.match(r'^[A-Za-z_\-$&%*!?][A-Za-z0-9_\-$&%*!?]*$', operand[3:]):
@@ -342,7 +339,10 @@ def generate_xml(operators, operands):
             elif operand.startswith("int@") or operand.startswith("bool@") or operand.startswith("string@") or operand.startswith("nil@"):
 
                 type_, value = operand.split('@', 1)
-
+                if type_ == 'string' and value == "": 
+                    continue
+                elif value == "":
+                    sys.exit(ERROR_LEXICAL_OR_SYNTAX) 
 
                 #print(value)
                 if type_ == 'int':
@@ -366,6 +366,9 @@ def generate_xml(operators, operands):
             elif operator == 'LABEL' or operator == 'CALL' or operator == 'JUMP' or  operator == 'JUMPIFEQ' or operator == 'JUMPIFNEQ':
                 type_ = 'label'
                 value = operand
+
+                if value.startswith('@'):
+                    sys.exit(ERROR_LEXICAL_OR_SYNTAX)
                 
                     
             elif operand.startswith("int") or operand.startswith("bool") or operand.startswith("string") or operand.startswith("nil"):
