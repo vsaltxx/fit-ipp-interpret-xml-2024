@@ -95,7 +95,7 @@ def check_allowed_number_of_operator_operands(operators, operands):
             operator == 'EQ' or 
             operator == 'AND' or 
             operator == 'OR' or
-            operator == 'STRING2INT' or
+            operator == 'STRI2INT' or
             operator == 'CONCAT' or
             operator == 'GETCHAR' or
             operator == 'SETCHAR' or
@@ -213,7 +213,7 @@ def validate_instruction(operator, operand, arg_number, type_, help_type):
             operator == 'EQ' or 
             operator == 'AND' or 
             operator == 'OR' or
-            operator == 'STRING2INT' or
+            operator == 'STRI2INT' or
             operator == 'CONCAT' or
             operator == 'GETCHAR' or
             operator == 'SETCHAR' or
@@ -286,7 +286,7 @@ def validate_instruction(operator, operand, arg_number, type_, help_type):
                  operator == 'MUL' or operator == 'IDIV' or 
                  operator == 'LT' or operator == 'GT' or operator == 'EQ' or 
                  operator == 'AND' or operator == 'OR' or
-                 operator == 'STRING2INT' or operator == 'CONCAT' or
+                 operator == 'STRI2INT' or operator == 'CONCAT' or
                  operator == 'SETCHAR' or operator == 'GETCHAR') 
                 and 
                 ((arg_number == 0 and type_ != 'var') or 
@@ -383,18 +383,6 @@ def generate_xml(operators, operands):
             # print(operands_num, arg_number, operand, help_type, type_)
 
             #print('dead after validation')
-
-    
-             
-            if (operator == 'POPS' and type_ != 'var'):
-                sys.exit(ERROR_LEXICAL_OR_SYNTAX)  
-
-            
-
-
-            if ((operator == 'PUSHS') and (type_ == 'type')):
-                sys.exit(ERROR_LEXICAL_OR_SYNTAX)  
-
 
             arg_number +=  1
             xml_output += f'    <arg{arg_number} type="{type_}">{escape_xml(value)}</arg{arg_number}>\n'
