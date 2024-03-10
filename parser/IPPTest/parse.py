@@ -138,17 +138,37 @@ def check_allowed_number_of_operator_operands(operators, operands):
 def validate_string(string):
 
     if "\\" in string:
-
+        
         escape_pattern = r'\\[0-9]{3}'
         escape_sequences = re.findall(escape_pattern, string)
+
+        error_pattern1 = r'\\[0-9]{2}[[A-Za-z_\-$&%*!?]'
+        error_pattern2 = r'\\[0-9]{1}[[A-Za-z_\-$&%*!?]'
+
+        error_sequences1 = re.findall(error_pattern1, string)
+        error_sequences2 = re.findall(error_pattern2, string)
+
+        # print(not error_sequences1)
+        # print(not error_sequences2)
+        # print(not error_sequences3)
+
+        # print(escape_sequences)
+
+        if (error_sequences1) or (error_sequences2):
+            # print('here')
+            sys.exit(ERROR_LEXICAL_OR_SYNTAX)
+
 
         if not escape_sequences:
             return False
 
+        # print(escape_sequences)
         for escape_seq in escape_sequences:
             
+            # print('yes')
             num = int(escape_seq[1:])
-            if 0 <= num <= 32 or num == 35 or num == 92:
+            # print(num)
+            if 0 <= num <= 999:
                 continue  
             else:
                 return False  
@@ -326,9 +346,6 @@ def generate_xml(operators, operands):
             # for each operand interation redefine help_type flag to "" (clear the value)
             help_type = ""
 
-            # print(operator)
-            # print(operand, arg_number)
-
             if operand.startswith("GF@") or operand.startswith("LF@") or operand.startswith("TF@"):
 
                 if not re.match(r'^[A-Za-z_\-$&%*!?][A-Za-z0-9_\-$&%*!?]*$', operand[3:]):
@@ -354,6 +371,7 @@ def generate_xml(operators, operands):
                         sys.exit(ERROR_LEXICAL_OR_SYNTAX) 
                 
                 if type_ == 'string':
+
                     if not validate_string(value):
                         sys.exit(ERROR_LEXICAL_OR_SYNTAX)         
 
