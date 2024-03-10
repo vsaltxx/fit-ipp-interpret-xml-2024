@@ -265,6 +265,8 @@ def validate_instruction(operator, operand, arg_number, type_, help_type):
 
         elif operands_num == 2:
             
+            #print(type_, arg_number)
+
             if ((operator =='NOT' or operator == 'MOVE' or 
                  operator == 'INT2CHAR' or operator == 'STRLEN' or 
                  operator == 'TYPE')
@@ -322,8 +324,8 @@ def generate_xml(operators, operands):
             # for each operand interation redefine help_type flag to "" (clear the value)
             help_type = ""
 
-            #print(operator)
-            #print(operand, arg_number)
+            # print(operator)
+            # print(operand, arg_number)
 
             if operand.startswith("GF@") or operand.startswith("LF@") or operand.startswith("TF@"):
 
@@ -339,10 +341,11 @@ def generate_xml(operators, operands):
             elif operand.startswith("int@") or operand.startswith("bool@") or operand.startswith("string@") or operand.startswith("nil@"):
 
                 type_, value = operand.split('@', 1)
-                if type_ == 'string' and value == "": 
-                    continue
-                elif value == "":
-                    sys.exit(ERROR_LEXICAL_OR_SYNTAX) 
+                # if type_ == 'string' and value == "": 
+                #     continue
+                # elif value == "":
+                #     sys.exit(ERROR_LEXICAL_OR_SYNTAX) 
+
 
                 #print(value)
                 if type_ == 'int':
@@ -379,7 +382,7 @@ def generate_xml(operators, operands):
                 sys.exit(ERROR_LEXICAL_OR_SYNTAX)  
 
 
-            #print(operators, operands, operator, operand)
+            # print(operators, operands, operator, operand)
             validate_instruction(operator, operand, arg_number, type_, help_type)
 
 
