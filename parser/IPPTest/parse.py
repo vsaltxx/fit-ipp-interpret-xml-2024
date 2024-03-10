@@ -161,6 +161,8 @@ def remove_leading_zeros_and_sign(number_str):
     if number_str.startswith('-'):
         is_negative = True
         number_str = number_str[1:]
+    elif number_str.startswith('+'):
+        number_str = number_str[1:]
 
     if number_str.startswith('0o') or number_str.startswith('0x'):
 
@@ -200,7 +202,7 @@ def validate_format(number_str):
         return False
 
 
-def validate_instruction(operator, operand, arg_number, type_, help_type):
+def validate_instruction(operator, arg_number, type_, help_type):
     
         #print(type_, help_type)
         
@@ -384,7 +386,7 @@ def generate_xml(operators, operands):
 
 
             # print(operators, operands, operator, operand)
-            validate_instruction(operator, operand, arg_number, type_, help_type)
+            validate_instruction(operator, arg_number, type_, help_type)
 
 
             # print(operands_num, arg_number, operand, help_type, type_)
