@@ -10,13 +10,18 @@ type_ = ""
 value = ""
 help_type = "" # use this flag in instruction validation
 
-operands_num = 0
+operands_num = 0 # each instruction has exact  number of operands
 
-# TODO add description
 def help():
     if '--help' in sys.argv and len(sys.argv) == 2:
-        print("ADD TEXT") #TODO
-        sys.exit(0)
+        print("Welcome to IPPcode24 parser!")
+        print("Script takes IPPcode24 as input, creates XML representation (encoding UTF-8) and sends it to output.")
+        print("Usage: python3.10 parse.py [options] < [file]")
+        print("- [options] Optional commnd-line options.")
+        print("- [file] Input file containing IPPcode24 code to be parsed.")
+        print("Default options:")
+        print("--help Prints help info.") 
+        exit(0)
     elif '--help' in sys.argv and len(sys.argv) > 2:
         sys.exit(ERROR_MISSING_PARAMETER) 
 
@@ -103,8 +108,6 @@ def check_allowed_number_of_operator_operands(operators, operands):
             operator == 'JUMPIFNEQ') and (len(operand_list) != 3):
             sys.exit(ERROR_LEXICAL_OR_SYNTAX)
     
-        
-
         if (operator == 'NOT' or 
             operator == 'MOVE' or
             operator == 'INT2CHAR' or 
@@ -113,7 +116,6 @@ def check_allowed_number_of_operator_operands(operators, operands):
             operator == 'TYPE') and (len(operand_list) != 2):
             sys.exit(ERROR_LEXICAL_OR_SYNTAX)
         
-
         if (operator == 'DEFVAR' or 
             operator == 'CALL' or
             operator == 'PUSHS' or
@@ -125,8 +127,6 @@ def check_allowed_number_of_operator_operands(operators, operands):
             operator == 'DPRINT') and (len(operand_list) != 1):
             sys.exit(ERROR_LEXICAL_OR_SYNTAX)
         
-        
-
         if (operator == 'CREATEFRAME' or 
             operator == 'PUSHFRAME' or
             operator == 'POPFRAME' or
@@ -148,26 +148,16 @@ def validate_string(string):
         error_sequences1 = re.findall(error_pattern1, string)
         error_sequences2 = re.findall(error_pattern2, string)
 
-        # print(not error_sequences1)
-        # print(not error_sequences2)
-        # print(not error_sequences3)
-
-        # print(escape_sequences)
-
         if (error_sequences1) or (error_sequences2):
-            # print('here')
             sys.exit(ERROR_LEXICAL_OR_SYNTAX)
 
 
         if not escape_sequences:
             return False
 
-        # print(escape_sequences)
         for escape_seq in escape_sequences:
             
-            # print('yes')
             num = int(escape_seq[1:])
-            # print(num)
             if 0 <= num <= 999:
                 continue  
             else:
@@ -222,10 +212,7 @@ def validate_format(number_str):
         return False
 
 
-def validate_instruction(operator, arg_number, type_, help_type):
-    
-        #print(type_, help_type)
-        
+def validate_instruction(operator, arg_number, type_, help_type):        
 
         if (operator == 'ADD' or 
             operator == 'SUB' or
@@ -288,8 +275,6 @@ def validate_instruction(operator, arg_number, type_, help_type):
 
         elif operands_num == 2:
             
-            #print(type_, arg_number)
-
             if ((operator =='NOT' or operator == 'MOVE' or 
                  operator == 'INT2CHAR' or operator == 'STRLEN' or 
                  operator == 'TYPE')
@@ -305,8 +290,6 @@ def validate_instruction(operator, arg_number, type_, help_type):
 
         elif operands_num == 3:
             
-            #print(operand, type_)
-
             if ((operator == 'ADD' or operator == 'SUB' or 
                  operator == 'MUL' or operator == 'IDIV' or 
                  operator == 'LT' or operator == 'GT' or operator == 'EQ' or 
@@ -318,7 +301,6 @@ def validate_instruction(operator, arg_number, type_, help_type):
                  (arg_number == 1 and help_type != 'symb') or 
                  (arg_number == 2 and help_type != 'symb'))):
                 
-                #print('dead in validation')
                 sys.exit(ERROR_LEXICAL_OR_SYNTAX)
             elif ((operator == 'JUMPIFEQ' or operator == 'JUMPIFNEQ')
                   and
@@ -329,11 +311,7 @@ def validate_instruction(operator, arg_number, type_, help_type):
                 sys.exit(ERROR_LEXICAL_OR_SYNTAX)
 
 
-
 def generate_xml(operators, operands):
-
-    #print(operators)
-    #print(operands)
 
     xml_output = '<?xml version="1.0" encoding="UTF-8"?>\n'
     xml_output += '<program language="IPPcode24">\n'
@@ -341,7 +319,6 @@ def generate_xml(operators, operands):
         xml_output += f'  <instruction order="{i+1}" opcode="{operator}">\n'
         arg_number = 0
         for operand in operands[i]:
-            
             
             # for each operand interation redefine help_type flag to "" (clear the value)
             help_type = ""
@@ -364,8 +341,6 @@ def generate_xml(operators, operands):
                 if value == "" and type_ != 'string':
                     sys.exit(ERROR_LEXICAL_OR_SYNTAX) 
 
-
-                #print(value)
                 if type_ == 'int':
                     if not validate_format(value):
                         sys.exit(ERROR_LEXICAL_OR_SYNTAX) 
@@ -402,14 +377,7 @@ def generate_xml(operators, operands):
             else:
                 sys.exit(ERROR_LEXICAL_OR_SYNTAX)  
 
-
-            # print(operators, operands, operator, operand)
             validate_instruction(operator, arg_number, type_, help_type)
-
-
-            # print(operands_num, arg_number, operand, help_type, type_)
-
-            #print('dead after validation')
 
             arg_number +=  1
             xml_output += f'    <arg{arg_number} type="{type_}">{escape_xml(value)}</arg{arg_number}>\n'
