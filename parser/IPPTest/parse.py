@@ -138,17 +138,37 @@ def check_allowed_number_of_operator_operands(operators, operands):
 def validate_string(string):
 
     if "\\" in string:
-
+        
         escape_pattern = r'\\[0-9]{3}'
         escape_sequences = re.findall(escape_pattern, string)
+
+        error_pattern1 = r'\\[0-9]{2}[[A-Za-z_\-$&%*!?]'
+        error_pattern2 = r'\\[0-9]{1}[[A-Za-z_\-$&%*!?]'
+
+        error_sequences1 = re.findall(error_pattern1, string)
+        error_sequences2 = re.findall(error_pattern2, string)
+
+        # print(not error_sequences1)
+        # print(not error_sequences2)
+        # print(not error_sequences3)
+
+        # print(escape_sequences)
+
+        if (error_sequences1) or (error_sequences2):
+            # print('here')
+            sys.exit(ERROR_LEXICAL_OR_SYNTAX)
+
 
         if not escape_sequences:
             return False
 
+        # print(escape_sequences)
         for escape_seq in escape_sequences:
             
+            # print('yes')
             num = int(escape_seq[1:])
-            if 0 <= num <= 32 or num == 35 or num == 92:
+            # print(num)
+            if 0 <= num <= 999:
                 continue  
             else:
                 return False  
@@ -160,6 +180,8 @@ def remove_leading_zeros_and_sign(number_str):
     is_negative = False
     if number_str.startswith('-'):
         is_negative = True
+        number_str = number_str[1:]
+    elif number_str.startswith('+'):
         number_str = number_str[1:]
 
     if number_str.startswith('0o') or number_str.startswith('0x'):
@@ -199,7 +221,8 @@ def validate_format(number_str):
     else:
         return False
 
-def validate_instruction(operator, operand, arg_number, type_, help_type):
+
+def validate_instruction(operator, arg_number, type_, help_type):
     
         #print(type_, help_type)
         
@@ -265,6 +288,8 @@ def validate_instruction(operator, operand, arg_number, type_, help_type):
 
         elif operands_num == 2:
             
+            #print(type_, arg_number)
+
             if ((operator =='NOT' or operator == 'MOVE' or 
                  operator == 'INT2CHAR' or operator == 'STRLEN' or 
                  operator == 'TYPE')
@@ -305,7 +330,6 @@ def validate_instruction(operator, operand, arg_number, type_, help_type):
 
 
 
-
 def generate_xml(operators, operands):
 
     #print(operators)
@@ -322,26 +346,23 @@ def generate_xml(operators, operands):
             # for each operand interation redefine help_type flag to "" (clear the value)
             help_type = ""
 
-            #print(operator)
-            #print(operand, arg_number)
-#############################################################################################
-#################################### set type, set value ####################################
-#############################################################################################
-            
             if operand.startswith("GF@") or operand.startswith("LF@") or operand.startswith("TF@"):
 
                 if not re.match(r'^[A-Za-z_\-$&%*!?][A-Za-z0-9_\-$&%*!?]*$', operand[3:]):
                     sys.exit(ERROR_LEXICAL_OR_SYNTAX)
                 if operand.count('@') != 1:
                     sys.exit(ERROR_LEXICAL_OR_SYNTAX)
+
                 type_ = 'var'
                 value = operand 
 
                 help_type = 'symb' # symb = var or const
 
             elif operand.startswith("int@") or operand.startswith("bool@") or operand.startswith("string@") or operand.startswith("nil@"):
-
+                
                 type_, value = operand.split('@', 1)
+                if value == "" and type_ != 'string':
+                    sys.exit(ERROR_LEXICAL_OR_SYNTAX) 
 
 
                 #print(value)
@@ -350,6 +371,7 @@ def generate_xml(operators, operands):
                         sys.exit(ERROR_LEXICAL_OR_SYNTAX) 
                 
                 if type_ == 'string':
+
                     if not validate_string(value):
                         sys.exit(ERROR_LEXICAL_OR_SYNTAX)         
 
@@ -366,7 +388,12 @@ def generate_xml(operators, operands):
             elif operator == 'LABEL' or operator == 'CALL' or operator == 'JUMP' or  operator == 'JUMPIFEQ' or operator == 'JUMPIFNEQ':
                 type_ = 'label'
                 value = operand
+
+                if value.startswith('@'):
+                    sys.exit(ERROR_LEXICAL_OR_SYNTAX)
                 
+                if not re.match(r'^[A-Za-z_\-$&%*!?][A-Za-z0-9_\-$&%*!?]*$', value[0]):
+                    sys.exit(ERROR_LEXICAL_OR_SYNTAX)
                     
             elif operand.startswith("int") or operand.startswith("bool") or operand.startswith("string") or operand.startswith("nil"):
                 type_ = 'type'
@@ -376,8 +403,8 @@ def generate_xml(operators, operands):
                 sys.exit(ERROR_LEXICAL_OR_SYNTAX)  
 
 
-            #print(operators, operands, operator, operand)
-            validate_instruction(operator, operand, arg_number, type_, help_type)
+            # print(operators, operands, operator, operand)
+            validate_instruction(operator, arg_number, type_, help_type)
 
 
             # print(operands_num, arg_number, operand, help_type, type_)

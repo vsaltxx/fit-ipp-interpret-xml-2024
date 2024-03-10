@@ -1,0 +1,8 @@
+[Fatal Error] simple3212.tmp:4:6:The processing instruction target matching "[xX][mM][lL]" is not allowed.
+org.xml.sax.SAXParseException; systemId: file:///mnt/d/VUT/4_sem/IPP/ipp-interpret-xml/parser/IPPTest/TESTS_2024/parse-only/GENERATED/getchar/simple3212.tmp; lineNumber: 4; columnNumber: 6; The processing instruction target matching "[xX][mM][lL]" is not allowed.
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1251)
+	at java.xml/com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:637)
+	at com.a7soft.examxml.ExamXMLHandler.loadXML(ExamXMLHandler.java:111)
+	at com.a7soft.examxml.ExamXML.loadXML(ExamXML.java:246)
+	at com.a7soft.examxml.ExamXML.compare(ExamXML.java:213)
+	at com.a7soft.examxml.ExamXML.main(ExamXML.java:383)
