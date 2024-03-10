@@ -54,8 +54,9 @@ The script may exit with the following error codes:
 8. `validate_string(string)`: Validates the format of string operands.
 9. `remove_leading_zeros_and_sign(number_str)`: Removes leading zeros and sign from number operands.
 10. `validate_format(number_str)`: Validates the format of number operands.
-11. `generate_xml(operators, operands)`: Generates an XML representation of parsed instructions.
-12. `escape_xml(string)`: Escapes special characters in XML strings.
+11. `validate_instruction(operator, arg_number, type_, help_type)`: Validates the syntax and semantics of each instruction based on its operator and operands.
+12. `generate_xml(operators, operands)`: Generates an XML representation of parsed instructions.
+13. `escape_xml(string)`: Escapes special characters in XML strings.
 
 ## Main Function
 `main()`: Orchestrates the execution of the script by calling the above functions in sequence.
