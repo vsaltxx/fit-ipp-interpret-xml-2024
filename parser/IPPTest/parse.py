@@ -199,6 +199,7 @@ def validate_format(number_str):
     else:
         return False
 
+
 def validate_instruction(operator, operand, arg_number, type_, help_type):
     
         #print(type_, help_type)
@@ -307,7 +308,6 @@ def validate_instruction(operator, operand, arg_number, type_, help_type):
 
 
 
-
 def generate_xml(operators, operands):
 
     #print(operators)
@@ -333,13 +333,14 @@ def generate_xml(operators, operands):
                     sys.exit(ERROR_LEXICAL_OR_SYNTAX)
                 if operand.count('@') != 1:
                     sys.exit(ERROR_LEXICAL_OR_SYNTAX)
+
                 type_ = 'var'
                 value = operand 
 
                 help_type = 'symb' # symb = var or const
 
             elif operand.startswith("int@") or operand.startswith("bool@") or operand.startswith("string@") or operand.startswith("nil@"):
-
+                
                 type_, value = operand.split('@', 1)
                 if value == "" and type_ != 'string':
                     sys.exit(ERROR_LEXICAL_OR_SYNTAX) 
@@ -371,6 +372,8 @@ def generate_xml(operators, operands):
                 if value.startswith('@'):
                     sys.exit(ERROR_LEXICAL_OR_SYNTAX)
                 
+                if not re.match(r'^[A-Za-z_\-$&%*!?][A-Za-z0-9_\-$&%*!?]*$', value[0]):
+                    sys.exit(ERROR_LEXICAL_OR_SYNTAX)
                     
             elif operand.startswith("int") or operand.startswith("bool") or operand.startswith("string") or operand.startswith("nil"):
                 type_ = 'type'
