@@ -341,10 +341,8 @@ def generate_xml(operators, operands):
             elif operand.startswith("int@") or operand.startswith("bool@") or operand.startswith("string@") or operand.startswith("nil@"):
 
                 type_, value = operand.split('@', 1)
-                # if type_ == 'string' and value == "": 
-                #     continue
-                # elif value == "":
-                #     sys.exit(ERROR_LEXICAL_OR_SYNTAX) 
+                if value == "" and type_ != 'string':
+                    sys.exit(ERROR_LEXICAL_OR_SYNTAX) 
 
 
                 #print(value)
