@@ -2,16 +2,19 @@
 **Jméno a příjmení:** Veranika Saltanava <br>
 **Login:** xsalta01 <br>
 
-# Filozofie návrhu
+# Úvod
+Tato implementační dokumentace popisuje návrh, implementaci a filozofii řešení skriptu interpret.php pro 2. úlohu v rámci předmětu IPP. Skript interpret.php je implementován v jazyce PHP a slouží k interpretaci kódu ve formátu XML reprezentujícím instrukční pás. Cílem skriptu je načíst a vykonat instrukce podle zadaného XML souboru a výstup předat na standardní výstup.
 
-Cílem implementace bylo vytvoření interpretačního skriptu v jazyce PHP, který dokáže interpretovat základní instrukce definované v rámci zadání úlohy. Hlavním úkolem bylo správně interpretovat instrukce a provádět požadované operace, jako je aritmetika, manipulace s řetězci a proměnnými, načítání ze vstupu a další.
+# Filozofie návrhu
 
 Filozofie návrhu skriptu interpret.php se zakládá na modularitě, čitelnosti a údržbě. Každá část kódu je rozdělena do samostatných funkcí, které mají jasně definovaný účel a odpovědnost. Komentáře jsou použity k dokumentaci kódu a k vysvětlení specifických částí implementace.
 
 
 # Interní reprezentace
 
-Interně jsou instrukce reprezentovány pomocí asociativního pole, kde klíče odpovídají jednotlivým atributům instrukce (např. opcode, argTypes, argValues). Pro uchovávání proměnných a paměťových rámců je použita třída MemoryFrame, která umožňuje přidávat, mazat a upravovat proměnné v rámci různých paměťových rámců. Paměťové rámce udržují stav proměnných a jejich hodnot v různých částech programu. Instrukční pole obsahuje všechny instrukce programu, které jsou postupně vykonávány interpretem.
+Interní reprezentace programu je založena na třídách a objektech, které reprezentují jednotlivé části instrukčního pásu, paměťové rámy a interpret. Základní třídou je `Interpreter`, která zajišťuje načtení XML souboru, interpretaci instrukcí a správu paměťových rámců.
+
+Interně jsou instrukce reprezentovány pomocí asociativního pole, kde klíče odpovídají jednotlivým atributům instrukce (např. opcode, argTypes, argValues). Pro uchovávání proměnných a paměťových rámců je použita třída `MemoryFrame`, která umožňuje přidávat, mazat a upravovat proměnné v rámci různých paměťových rámců. Paměťové rámce udržují stav proměnných a jejich hodnot v různých částech programu. Instrukční pole obsahuje všechny instrukce programu, které jsou postupně vykonávány interpretem.
 
 
 # Specifický postup řešení
