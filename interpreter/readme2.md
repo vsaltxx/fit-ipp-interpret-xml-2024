@@ -1,6 +1,6 @@
-Implementační dokumentace k 2. úloze do IPP 2023/2024
-Jméno a příjmení: Veranika Saltanava
-Login: xsalta01
+**Implementační dokumentace k 2. úloze do IPP 2023/2024** <br>
+**Jméno a příjmení:** Veranika Saltanava <br>
+**Login:** xsalta01 <br>
 
 # Filozofie návrhu
 
