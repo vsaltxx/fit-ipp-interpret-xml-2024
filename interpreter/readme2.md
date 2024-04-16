@@ -27,6 +27,6 @@ Interně jsou instrukce reprezentovány pomocí asociativního pole, kde klíče
 
 # UML diagram tříd
 
-![UML diagram tříd](uml_interpret.png)
+![UML diagram tříd](uml_interpet.png)
 
 
