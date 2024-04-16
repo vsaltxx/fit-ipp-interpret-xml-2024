@@ -26,7 +26,6 @@ Instructions are internally represented using an associative array, where keys c
 
 # UML Class Diagram
 
-
-![ML Class Diagram](uml_interpet.png)
+![UML Class Diagram](uml_interpet.png)
 
 
